@@ -4,15 +4,27 @@ FROM ros:jazzy-ros-base
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-colcon-common-extensions \
+    build-essential \
+    ros-jazzy-cv-bridge \
+    python3-opencv \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy your workspace
-COPY src/ /ros2_ws/src/
+# Install your required pip packages
+RUN rm -f /usr/lib/python3.12/EXTERNALLY-MANAGED
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-WORKDIR /ros2_ws
+# Copy your workspace
+COPY src/ /elegoo_src_ros2_ws/src/
 
 # Build the workspace
-RUN . /opt/ros/humble/setup.sh && colcon build
+WORKDIR /elegoo_src_ros2_ws
+RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+
+COPY scripts/setup.sh scripts/setup.sh
+RUN chmod +x scripts/setup.sh
+
+COPY espcam_calib_params.mat espcam_calib_params.mat
 
 # Source the workspace on container start
-CMD ["/bin/bash", "-c", "source /ros2_ws/install/setup.bash && ros2 run <your_package> <your_node>"]
+CMD ["/bin/bash", "-c", "scripts/setup.sh"]
