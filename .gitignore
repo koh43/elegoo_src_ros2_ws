@@ -1,0 +1,10 @@
+# ROS2
+build/
+install/
+log/
+
+# Venv
+ros2_src_venv/
+
+# misc
+.ipynb_checkpoints/

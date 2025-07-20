@@ -1,0 +1,6 @@
+[submodule "src/elegoo_src_ros2"]
+	path = src/elegoo_src_ros2
+	url = https://github.com/koh43/elegoo_src_base.git
+[submodule "src/elegoo_src_ros2_interfaces"]
+	path = src/elegoo_src_ros2_interfaces
+	url = https://github.com/koh43/elegoo_src_ros2_interfaces.git
